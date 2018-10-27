@@ -18,4 +18,4 @@ Bamazon is a CLI (command line interface) app using node.js and mysql package.
 
 5. node bamazonSupervisor.js for Supervisor's view
 
-![Demo of Sueprvisor's View](http://g.recordit.co/4cTl3YYJD5.gif)
+![Demo of Sueprvisor's View](http://g.recordit.co/G5wLq3rtlU.gif)
