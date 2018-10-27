@@ -8,5 +8,12 @@ CREATE TABLE products(
   product_name VARCHAR(100) NOT NULL DEFAULT '',
   department_name VARCHAR(50) NOT NULL DEFAULT 'General Stock',
   price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-  stock_quantity INTEGER NOT NULL DEFAULT 0
+  stock_quantity INTEGER NOT NULL DEFAULT 0,
+  product_sales DECIMAL(10,2) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE departments(
+  department_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  department_name VARCHAR(50) NOT NULL DEFAULT 'General Stock',
+  over_head_costs INTEGER NOT NULL DEFAULT 0
 );

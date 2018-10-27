@@ -3,19 +3,25 @@ var Table = require("cli-table3");
 var inquirer = require("inquirer");
 
 var table = new Table({
-  head: ["ID",
+  head: [
+    "ID",
     "Name",
     "Price",
-    "In Stock"]
-  , colWidths: [5,40,15,10]
+    "In Stock",
+    "Product Sales"
+  ]
+  , colWidths: [5,40,15,10, 10]
 });
 
 function clearTable() {
   table = new Table({
-    head: ["ID",
+    head: [
+      "ID",
       "Name",
       "Price",
-      "In Stock"]
+      "In Stock",
+      "Product Sales"
+    ]
     , colWidths: [5,40,15,10]
   });
 }
@@ -41,10 +47,10 @@ function start() {
       type: "rawlist",
       message: "Choose from an option below:",
       choices: [
-        "View Products for Sale"
-        , "View Low Inventory"
-        , "Add to Inventory"
-        , "Add New Product"
+        "View Products for Sale",
+        "View Low Inventory",
+        "Add to Inventory",
+        "Add New Product"
       ]
     })
     .then(function(answer) {
@@ -71,15 +77,16 @@ function start() {
 
 function displayAllProducts() {
   console.log("Displaying All Products Available For Sale:\n");
-  connection.query("SELECT item_id, product_name, FORMAT(price, 2) as price, stock_quantity FROM products", function(err, res) {
+  connection.query("SELECT item_id, product_name, FORMAT(price, 2) as price, stock_quantity, FORMAT(product_sales, 2) as product_sales FROM products", function(err, res) {
     if (err) throw err;
 
     for (var i = 0; i < res.length; i++) {
       table.push([
-        res[i].item_id
-        ,res[i].product_name
-        ,"$" + res[i].price
-        ,res[i].stock_quantity
+        res[i].item_id,
+        res[i].product_name,
+        "$" + res[i].price,
+        res[i].stock_quantity,
+        res[i].product_sales
       ]);
       }
       console.log(table.toString());
@@ -94,10 +101,11 @@ function viewLowInventory() {
 
     for (var i = 0; i < res.length; i++) {
       table.push([
-        res[i].item_id
-        ,res[i].product_name
-        ,"$" + res[i].price
-        ,res[i].stock_quantity
+        res[i].item_id,
+        res[i].product_name,
+        "$" + res[i].price,
+        res[i].stock_quantity,
+        "$" + res[i].product_sales
       ]);
       }
       console.log(table.toString());
@@ -153,10 +161,15 @@ function addNewProduct() {
       name: "itemStock",
       type: "input",
       message: "Enter initial inventory amount: "
+    },
+    {
+      name: "category",
+      type: "input",
+      message: "Enter department name: "
     }])
     .then(function(newItem) {
-      connection.query("INSERT INTO products (product_name, price, stock_quantity) VALUES (?,?,?)",
-        [newItem.itemName, newItem.itemPrice, newItem.itemStock],
+      connection.query("INSERT INTO products (product_name, price, stock_quantity, department_name) VALUES (?,?,?,?)",
+        [newItem.itemName, newItem.itemPrice, newItem.itemStock, newItem.category],
         function(err, res) {
           if (err) throw err;
 
